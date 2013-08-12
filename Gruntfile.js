@@ -23,8 +23,7 @@ module.exports = function (grunt) {
                 jshintrc: '.jshintrc'
             },
 
-            src: 'src/**/*.js',
-            test: 'test/**/*.js'
+            src: 'src/**/*.js'
         },
 
         concat: {

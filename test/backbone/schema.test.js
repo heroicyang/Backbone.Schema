@@ -1,5 +1,4 @@
-/*jshint maxstatements:41 */
-$(function () {
+(function () {
     'use strict';
 
     ///////////////////
@@ -1073,4 +1072,4 @@ $(function () {
         model.unset(attribute);
         ok(!_.has(attributes, attribute));
     });
-});
+}());

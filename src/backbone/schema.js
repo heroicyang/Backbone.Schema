@@ -1,6 +1,12 @@
 /*jshint maxstatements:14, maxcomplexity:9 */
-(function (self) {
+(function () {
     'use strict';
+
+    ////////////////////
+
+    var scope;
+
+    ////////////////////
 
     var Schema = Backbone.Schema = function (model) {
 
@@ -12,7 +18,7 @@
 
         ////////////////////
 
-        self = _.extend(this, {
+        scope = _.extend(this, {
             model: model
         }, {
             handlers: {}
@@ -46,7 +52,7 @@
 
                 ////////////////////
 
-                var getter = (self.handlers[attribute] || {}).getter;
+                var getter = (scope.handlers[attribute] || {}).getter;
 
                 ////////////////////
 
@@ -76,7 +82,7 @@
 
                     ////////////////////
 
-                    var setter = (self.handlers[attribute] || {}).setter;
+                    var setter = (scope.handlers[attribute] || {}).setter;
 
                     ////////////////////
 
@@ -438,7 +444,7 @@
                         ////////////////////
 
                         if (_.isUndefined(value)) {
-                            value = self.defaultValue(attribute);
+                            value = scope.defaultValue(attribute);
                         }
 
                         ////////////////////

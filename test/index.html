@@ -5,9 +5,15 @@
 
         <title>Backbone.Schema Test Suite</title>
 
-        <!-- QUnit -->
-        <link rel="stylesheet" href="../lib/qunit/qunit.css">
-        <script src="../lib/qunit/qunit.js"></script>
+        <!-- Mocha -->
+        <link rel="stylesheet" href="../lib/mocha/mocha.css">
+        <script src="../lib/mocha/mocha.js"></script>
+        <script>mocha.setup('bdd');</script>
+
+        <!-- Assertion Libraries -->
+        <script src="../lib/chai/chai.js"></script>
+        <script src="../lib/sinon/sinon.js"></script>
+        <script src="../lib/sinon/sinon.chai.js"></script>
 
         <!-- Libraries -->
         <script src="../lib/jquery/jquery.js"></script>
@@ -19,10 +25,12 @@
         <script src="../src/backbone/schema.js"></script>
 
         <!-- Tests -->
-        <script src="backbone/schema_test.js"></script>
+        <script src="backbone/schema.test.js"></script>
+
+        <script>$(mocha.run);</script>
     </head>
 
     <body>
-        <section id="qunit"></section>
+        <div id="mocha"></div>
     </body>
 </html>
