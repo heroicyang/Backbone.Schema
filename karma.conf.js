@@ -34,8 +34,10 @@ module.exports = function (config) {
             dir: 'coverage'
         },
 
+        reportSlowerThan: 75,
+
         browsers: ['Firefox'],
 
-        reportSlowerThan: 75
+        autoWatch: true
     });
 };

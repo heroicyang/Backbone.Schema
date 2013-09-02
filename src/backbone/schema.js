@@ -1,4 +1,4 @@
-/*jshint maxstatements:14, maxcomplexity:9 */
+/*jshint maxstatements:14, maxcomplexity:9, maxlen:104 */
 (function () {
     'use strict';
 
@@ -108,7 +108,7 @@
                 },
 
                 setter: function (attribute, value) {
-                    return String(value);
+                    return _.isString(value) ? value : String(value);
                 }
             },
 
@@ -118,7 +118,7 @@
                 },
 
                 setter: function (attribute, value) {
-                    return Boolean(value);
+                    return _.isBoolean(value) ? value : Boolean(value);
                 }
             },
 
@@ -127,11 +127,11 @@
 
                     ////////////////////
 
-                    var format = options.format || 'n', culture = options.culture;
+                    var culture = options.culture, format = options.format;
 
                     ////////////////////
 
-                    return Globalize.format(value, format, culture);
+                    return format ? Globalize.format(value, format, culture) : value;
                 },
 
                 setter: function (attribute, value, options) {
@@ -142,11 +142,13 @@
 
                     ////////////////////
 
-                    value = String(value);
+                    var result = Number(value);
 
-                    ////////////////////
+                    if (isNaN(result)) {
+                        result = _.isString(value) ? value : String(value);
+                    }
 
-                    return Globalize.parseFloat(value, culture) || Number(value);
+                    return _.isNumber(result) ? result : Globalize.parseFloat(result, culture) || 'NaN';
                 }
             },
 
@@ -155,47 +157,48 @@
 
                     ////////////////////
 
-                    var format = options.format || 'd', culture = options.culture;
+                    var culture = options.culture, format = options.format;
 
                     ////////////////////
 
-                    value = new Date(value);
+                    if (!_.isDate(value)) {
+                        value = new Date(value);
+                    }
 
                     ////////////////////
 
-                    return Globalize.format(value, format, culture);
+                    return format ? Globalize.format(value, format, culture) : value;
                 },
 
                 setter: function (attribute, value, options) {
 
                     ////////////////////
 
-                    var format = options.format || 'd', culture = options.culture,
-                        standard = options.standard;
+                    var culture = options.culture, format = options.format, standard = options.standard;
 
                     ////////////////////
 
-                    value = Globalize.parseDate(value, format, culture) || new Date(value);
+                    if (!_.isDate(value)) {
+                        value = Globalize.parseDate(value, format, culture) || new Date(value);
+                    }
 
                     ////////////////////
 
-                    var datetime;
+                    var result;
 
                     switch (standard) {
+                    case 'iso':
+                        result = value.toJSON() ? value.toISOString() : value.toString();
+                        break;
                     case 'unix':
-                        datetime = value.getTime();
+                        result = value.getTime();
                         break;
                     default:
-                        try {
-                            datetime = value.toISOString();
-                        } catch (error) {
-                            datetime = value.toString();
-                        }
-
+                        result = value;
                         break;
                     }
 
-                    return datetime;
+                    return result;
                 }
             },
 
@@ -219,36 +222,13 @@
 
                     ////////////////////
 
-                    value = String(value);
+                    var result, messages = Globalize.findClosestCulture(culture).messages;
 
-                    ////////////////////
-
-                    var match, messages = Globalize.findClosestCulture(culture).messages,
-
-                        pairs = _.pairs(messages);
-
-                    match = _.find(pairs, function (pair) {
-                        return pair[1] === value;
+                    _.find(messages, function (localization, message) {
+                        return localization === value ? result = message : false;
                     });
 
-                    return match ? match[0] : value;
-                }
-            },
-
-            text: {
-                getter: function (attribute, value) {
-                    return _.unescape(value);
-                },
-
-                setter: function (attribute, value) {
-
-                    ////////////////////
-
-                    value = _.unescape(value);
-
-                    ////////////////////
-
-                    return _.escape(value);
+                    return result || String(value);
                 }
             },
 
@@ -389,7 +369,7 @@
         },
 
         defaultValue: function (attribute) {
-            var defaults = _.result(this.model, 'defaults');
+            var defaults = _.result(this.model, 'defaults') || {};
 
             return _.has(defaults, attribute) ? defaults[attribute] : null;
         },
