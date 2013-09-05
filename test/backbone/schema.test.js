@@ -1,36 +1,38 @@
 (function (expect) {
     'use strict';
 
-    ////////////////////
-
-    var sourceCollection = new Backbone.Collection();
-
-    ////////////////////
-
-    before(function () {
-        Globalize.addCultureInfo('en', {
-            messages: {
-                'HELLO_WORLD': 'Hello, World!'
-            }
-        });
-    });
-
-    beforeEach(function () {
-        sourceCollection.set([
-            { id: 0, value: 'foo' },
-            { id: 1, value: 'bar' },
-            { id: 2, value: 'baz' },
-            { id: 3, value: 'qux' }
-        ]);
-    });
-
-    ////////////////////
-
     describe('Backbone.Schema', function () {
 
         ////////////////////
 
-        var model, schema;
+        var model, schema, sourceCollection = new Backbone.Collection();
+
+        ////////////////////
+
+        before(function () {
+            Globalize.addCultureInfo('en', {
+                messages: {
+                    'HELLO_WORLD': 'Hello, World!'
+                }
+            });
+        });
+
+        beforeEach(function () {
+            sourceCollection.set([
+                { id: 0, value: 'foo' },
+                { id: 1, value: 'bar' },
+                { id: 2, value: 'baz' },
+                { id: 3, value: 'qux' }
+            ]);
+        });
+
+//        afterEach(function () {
+//
+//        });
+
+//        after(function () {
+//
+//        });
 
         ////////////////////
 
@@ -76,7 +78,7 @@
         });
 
         describe('#define(attribute, options)', function () {
-            it('should define properties of the model', function () {
+            it('should add handlers to attributes of the model', function () {
                 schema.define({
                     'string-property': { type: 'string' },
                     'boolean-property': { type: 'boolean' },
@@ -98,43 +100,63 @@
                 });
 
                 schema.define('typeless-property');
+
+                expect(schema.handlers).to.have.keys([
+                    'string-property',
+                    'boolean-property',
+                    'number-property',
+                    'datetime-property',
+                    'locale-property',
+
+                    'array-of-strings',
+                    'array-of-booleans',
+                    'array-of-numbers',
+                    'array-of-datetimes',
+                    'array-of-locales',
+
+                    'nested-model',
+                    'nested-collection',
+
+                    'reference-model',
+                    'reference-collection',
+
+                    'typeless-property'
+                ]);
             });
 
             it('should convert existing attributes according to schema', function () {
-                var attributes = model.attributes;
+                expect(model.attributes['string-property']).to.equal('string');
+                expect(model.attributes['boolean-property']).to.be.true;
+                expect(model.attributes['number-property']).to.equal(999999.99);
+                expect(model.attributes['datetime-property']).to.equal('2012-12-12T00:00:00.000Z');
+                expect(model.attributes['locale-property']).to.equal('HELLO_WORLD');
 
-                expect(attributes['string-property']).to.equal('string');
-                expect(attributes['boolean-property']).to.be.true;
-                expect(attributes['number-property']).to.equal(999999.99);
-                expect(attributes['datetime-property']).to.equal('2012-12-12T00:00:00.000Z');
-                expect(attributes['locale-property']).to.equal('HELLO_WORLD');
+                expect(model.attributes['array-of-strings']).to.deep.equal(['string']);
+                expect(model.attributes['array-of-booleans']).to.deep.equal([true]);
+                expect(model.attributes['array-of-numbers']).to.deep.equal([999999.99]);
+                expect(model.attributes['array-of-datetimes']).to.deep.equal(['2012-12-12T00:00:00.000Z']);
+                expect(model.attributes['array-of-locales']).to.deep.equal(['HELLO_WORLD']);
 
-                expect(attributes['array-of-strings']).to.deep.equal(['string']);
-                expect(attributes['array-of-booleans']).to.deep.equal([true]);
-                expect(attributes['array-of-numbers']).to.deep.equal([999999.99]);
-                expect(attributes['array-of-datetimes']).to.deep.equal(['2012-12-12T00:00:00.000Z']);
-                expect(attributes['array-of-locales']).to.deep.equal(['HELLO_WORLD']);
-
-                expect(attributes['nested-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
-                expect(attributes['nested-collection'].toJSON()).to.deep.equal([
+                expect(model.attributes['nested-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
+                expect(model.attributes['nested-collection'].toJSON()).to.deep.equal([
                     { id: 1, value: 'bar' },
                     { id: 2, value: 'baz' },
                     { id: 3, value: 'qux' }
                 ]);
 
-                expect(attributes['reference-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
-                expect(attributes['reference-collection'].toJSON()).to.deep.equal([
+                expect(model.attributes['reference-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
+                expect(model.attributes['reference-collection'].toJSON()).to.deep.equal([
                     { id: 1, value: 'bar' },
                     { id: 2, value: 'baz' },
                     { id: 3, value: 'qux' }
                 ]);
 
-                expect(attributes['typeless-property']).to.be.null;
+                expect(model.attributes['typeless-property']).to.be.null;
             });
         });
 
         describe('#model.toJSON()', function () {
-            it('should return original attributes and invoke `toJSON()` of a nested models and collections', function () {
+            it('should return original attributes and invoke `toJSON()` of all nested models and collections', function () {
                 expect(model.toJSON()).to.deep.equal({
                     'string-property': 'string',
                     'boolean-property': true,
