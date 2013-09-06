@@ -11,7 +11,7 @@
 
     ////////////////////
 
-    var scope;
+    var schema;
 
     ////////////////////
 
@@ -25,7 +25,7 @@
 
         ////////////////////
 
-        scope = _.extend(this, {
+        schema = _.extend(this, {
             model: model
         }, {
             handlers: {}
@@ -59,7 +59,7 @@
 
                 ////////////////////
 
-                var getter = (scope.handlers[attribute] || {}).getter;
+                var getter = (schema.handlers[attribute] || {}).getter;
 
                 ////////////////////
 
@@ -89,7 +89,7 @@
 
                     ////////////////////
 
-                    var setter = (scope.handlers[attribute] || {}).setter;
+                    var setter = (schema.handlers[attribute] || {}).setter;
 
                     ////////////////////
 
@@ -431,7 +431,7 @@
                         ////////////////////
 
                         if (_.isUndefined(value)) {
-                            value = scope.defaultValue(attribute);
+                            value = schema.defaultValue(attribute);
                         }
 
                         ////////////////////
