@@ -5,7 +5,7 @@
 [travis-link]: https://travis-ci.org/DreamTheater/Backbone.Schema
 
 [gemnasium-badge]: https://gemnasium.com/DreamTheater/Backbone.Schema.png
-[gemnasium-link]: https://gemnasium.com/DreamTheater/Backbone.Schema#tab-dev_dependencies
+[gemnasium-link]: https://gemnasium.com/DreamTheater/Backbone.Schema
 
 # Backbone.Schema
 
@@ -18,7 +18,7 @@ The plugin helps you define schemas for your models. It supports a regular types
 **Dependencies:**
 
   - [Backbone](https://github.com/documentcloud/backbone) `>= 1.0.0`
-  - [Underscore](https://github.com/documentcloud/underscore) `>= 1.5.1`
+  - [Underscore](https://github.com/documentcloud/underscore) `>= 1.5.2`
   - [Globalize](https://github.com/jquery/globalize) `>= 0.1.1`
 
 ## Getting Started
@@ -221,6 +221,9 @@ model.get('reference-collection'); // <-- instance of Backbone.Collection
 The plugin prevents setting `undefined` values, instead of this it assigns a default value or `null` for regular properties, `{}` for models and `[]` for collections and arrays.
 
 ## Changelog
+### 0.4.7
+  - Added CommonJS support
+
 ### 0.4.6
   - Removed `text` type
   - `number` and `datetime` requires `format` option for string output

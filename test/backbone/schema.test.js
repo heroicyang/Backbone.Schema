@@ -1,7 +1,35 @@
-(function (expect) {
+(function (factory) {
     'use strict';
 
-    describe('Backbone.Schema', function () {
+    if (typeof exports !== 'undefined') {
+        require('../../index.js');
+
+        module.exports = factory({
+            _: require('underscore'),
+            Backbone: require('backbone'),
+            Globalize: require('globalize'),
+
+            chai: require('chai'),
+            sinon: require('sinon')
+        });
+    } else {
+        factory(window);
+    }
+}(function (root) {
+    'use strict';
+
+    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize,
+
+        chai = root.chai,
+        sinon = root.sinon;
+
+    ////////////////////
+
+    var expect = chai.expect;
+
+    ////////////////////
+
+    return describe('Backbone.Schema', function () {
 
         ////////////////////
 
@@ -26,13 +54,13 @@
             ]);
         });
 
-//        afterEach(function () {
-//
-//        });
+        //        afterEach(function () {
+        //
+        //        });
 
-//        after(function () {
-//
-//        });
+        //        after(function () {
+        //
+        //        });
 
         ////////////////////
 
@@ -788,8 +816,7 @@
 
         describe('#model.set("nested-model")', function () {
             it('should initialize model using value as data set (argument `attributes`)', function () {
-                var attribute = 'nested-model',
-                    nestedModel = model.get(attribute);
+                var attribute = 'nested-model', nestedModel = model.get(attribute);
 
                 model.set(attribute, { id: 0, value: 'foo' });
                 expect(nestedModel.toJSON()).to.deep.equal({ id: 0, value: 'foo' });
@@ -816,8 +843,7 @@
 
         describe('#model.set("nested-collection")', function () {
             it('should initialize collection using value as data set (argument `models`)', function () {
-                var attribute = 'nested-collection',
-                    nestedCollection = model.get(attribute);
+                var attribute = 'nested-collection', nestedCollection = model.get(attribute);
 
                 model.set(attribute, [
                     { id: 1, value: 'bar' },
@@ -831,7 +857,6 @@
                     { id: 3, value: 'qux' }
                 ]);
 
-
                 model.set(attribute, new Backbone.Collection([
                     { id: 1, value: 'bar' },
                     { id: 2, value: 'baz' },
@@ -843,7 +868,6 @@
                     { id: 2, value: 'baz' },
                     { id: 3, value: 'qux' }
                 ]);
-
 
                 model.set(attribute, nestedCollection);
                 expect(nestedCollection.toJSON()).to.deep.equal([
@@ -868,8 +892,7 @@
 
         describe('#model.set("reference-model")', function () {
             it('should set reference model (pick it from source collection) using value as ID', function () {
-                var attribute = 'reference-model',
-                    referenceModel = model.get(attribute);
+                var attribute = 'reference-model', referenceModel = model.get(attribute);
 
                 model.set(attribute, 0);
                 expect(referenceModel.toJSON()).to.deep.equal({ id: 0, value: 'foo' });
@@ -896,8 +919,7 @@
 
         describe('#model.set("reference-collection")', function () {
             it('should initialize collection with reference models (pick them from source collection) using value as a set of IDs', function () {
-                var attribute = 'reference-collection',
-                    referenceCollection = model.get(attribute);
+                var attribute = 'reference-collection', referenceCollection = model.get(attribute);
 
                 model.set(attribute, [
                     1,
@@ -911,7 +933,6 @@
                     { id: 3, value: 'qux' }
                 ]);
 
-
                 model.set(attribute, new Backbone.Collection([
                     { id: 1, value: 'bar' },
                     { id: 2, value: 'baz' },
@@ -923,7 +944,6 @@
                     { id: 2, value: 'baz' },
                     { id: 3, value: 'qux' }
                 ]);
-
 
                 model.set(attribute, referenceCollection);
                 expect(referenceCollection.toJSON()).to.deep.equal([
@@ -1030,4 +1050,4 @@
             });
         });
     });
-}(chai.expect));
+}));

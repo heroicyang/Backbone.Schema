@@ -1,13 +1,27 @@
 /**
- * Backbone.Schema v0.4.6
+ * Backbone.Schema v0.4.7
  * https://github.com/DreamTheater/Backbone.Schema
  *
  * Copyright (c) 2013 Dmytro Nemoga
  * Released under the MIT license
  */
-/*jshint maxstatements:14, maxcomplexity:9, maxlen:104 */
-(function () {
+/*jshint maxstatements:15, maxcomplexity:9, maxlen:104 */
+(function (factory) {
     'use strict';
+
+    if (typeof exports !== 'undefined') {
+        module.exports = factory({
+            _: require('underscore'),
+            Backbone: require('backbone'),
+            Globalize: require('globalize')
+        });
+    } else {
+        factory(window);
+    }
+}(function (root) {
+    'use strict';
+
+    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
 
     ////////////////////
 
@@ -248,6 +262,10 @@
 
                     ////////////////////
 
+                    options = _.clone(options);
+
+                    ////////////////////
+
                     var Model, source = options.source, clear = options.clear;
 
                     Model = options.model || source.model;
@@ -286,6 +304,10 @@
                 },
 
                 setter: function (attribute, value, options) {
+
+                    ////////////////////
+
+                    options = _.clone(options);
 
                     ////////////////////
 
@@ -478,4 +500,6 @@
             if (setter) options.setter = _.bind(setter, model);
         }
     });
-}());
+
+    return Schema;
+}));
