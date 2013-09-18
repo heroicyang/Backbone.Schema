@@ -43,7 +43,7 @@
     },
 
     "scripts": {
-        "test": "./node_modules/.bin/grunt jshint karma"
+        "test": "./node_modules/.bin/grunt jshint karma && ./node_modules/.bin/mocha test/**/*.test.js"
     },
 
     "dependencies": {
@@ -60,6 +60,7 @@
         "grunt-contrib-jshint": "~0.6.4",
         "grunt-contrib-uglify": "~0.2.4",
         "grunt-karma": "~0.7.1",
+        "jsdom": "~0.8.4",
         "karma-coverage": "~0.1.0",
         "karma-mocha": "~0.1.0",
         "mocha": "~1.12.1",

@@ -18,10 +18,10 @@
     } else {
         factory(window);
     }
-}(function (root) {
+}(function (environment) {
     'use strict';
 
-    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
+    var _ = environment._, Backbone = environment.Backbone, Globalize = environment.Globalize;
 
     ////////////////////
 

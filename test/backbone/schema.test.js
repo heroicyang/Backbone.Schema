@@ -2,26 +2,24 @@
     'use strict';
 
     if (typeof exports !== 'undefined') {
-        require('../../index.js');
 
-        module.exports = factory({
-            _: require('underscore'),
-            Backbone: require('backbone'),
-            Globalize: require('globalize'),
+        ////////////////////
 
-            chai: require('chai'),
-            sinon: require('sinon')
-        });
+        var environment = require('../environment.js');
+
+        ////////////////////
+
+        module.exports = factory(environment);
     } else {
         factory(window);
     }
-}(function (root) {
+}(function (environment) {
     'use strict';
 
-    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize,
+    var _ = environment._, Backbone = environment.Backbone, Globalize = environment.Globalize,
 
-        chai = root.chai,
-        sinon = root.sinon;
+        chai = environment.chai,
+        sinon = environment.sinon;
 
     ////////////////////
 
@@ -54,13 +52,13 @@
             ]);
         });
 
-        //        afterEach(function () {
+        // afterEach(function () {
         //
-        //        });
+        // });
 
-        //        after(function () {
+        // after(function () {
         //
-        //        });
+        // });
 
         ////////////////////
 
