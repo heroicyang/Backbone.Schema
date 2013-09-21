@@ -1,3 +1,1 @@
-module.exports = {
-    Schema: require('./src/backbone/schema.js')
-};
+module.exports = require('./dist/backbone.schema.js');

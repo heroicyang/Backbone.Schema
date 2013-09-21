@@ -10,11 +10,13 @@ module.exports = (function () {
 
     ////////////////////
 
-    Backbone.$ = require('../lib/jquery/jquery.js')(require('./window.js'));
+    global.window = require('./window.js');
+
+    _.extend(Backbone, require('../index.js'), {
+        $: require('../lib/jquery/jquery.js')(window)
+    });
 
     ////////////////////
-
-    var index = require('../index.js');
 
     return {
         _: _,

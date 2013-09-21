@@ -1,25 +1,23 @@
 (function (factory) {
     'use strict';
 
-    if (typeof exports !== 'undefined') {
+    var isNode = typeof module === 'object' && typeof exports === 'object';
 
-        ////////////////////
+    ////////////////////
 
-        var environment = require('../environment.js');
+    var root = isNode ? require('../environment.js') : window;
 
-        ////////////////////
+    ////////////////////
 
-        module.exports = factory(environment);
-    } else {
-        factory(window);
-    }
-}(function (environment) {
+    factory(root, isNode);
+
+}(function (root) {
     'use strict';
 
-    var _ = environment._, Backbone = environment.Backbone, Globalize = environment.Globalize,
+    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize,
 
-        chai = environment.chai,
-        sinon = environment.sinon;
+        chai = root.chai,
+        sinon = root.sinon;
 
     ////////////////////
 
@@ -27,7 +25,7 @@
 
     ////////////////////
 
-    return describe('Backbone.Schema', function () {
+    describe('Backbone.Schema', function () {
 
         ////////////////////
 

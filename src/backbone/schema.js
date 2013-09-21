@@ -2,19 +2,24 @@
 (function (factory) {
     'use strict';
 
-    if (typeof exports !== 'undefined') {
-        module.exports = factory({
-            _: require('underscore'),
-            Backbone: require('backbone'),
-            Globalize: require('globalize')
-        });
-    } else {
-        factory(window);
-    }
-}(function (environment) {
+    var isNode = typeof module === 'object' && typeof exports === 'object';
+
+    ////////////////////
+
+    var root = isNode ? {
+        _: require('underscore'),
+        Backbone: require('backbone'),
+        Globalize: require('globalize')
+    } : window;
+
+    ////////////////////
+
+    (isNode ? exports : Backbone).Schema = factory(root, isNode);
+
+}(function (root) {
     'use strict';
 
-    var _ = environment._, Backbone = environment.Backbone, Globalize = environment.Globalize;
+    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
 
     ////////////////////
 

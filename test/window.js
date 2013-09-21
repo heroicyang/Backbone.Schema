@@ -5,7 +5,7 @@
 
     ////////////////////
 
-    if (typeof exports !== 'undefined') {
+    if (typeof module === 'object' && typeof exports === 'object') {
 
         ////////////////////
 
@@ -14,6 +14,7 @@
         ////////////////////
 
         module.exports = jsdom.jsdom(html).parentWindow;
+
     } else {
         $(window.__html__[FIXTURE_FILEPATH]).children().appendTo(document.body);
     }
