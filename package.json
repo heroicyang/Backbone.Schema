@@ -43,7 +43,8 @@
     },
 
     "scripts": {
-        "test": "./node_modules/.bin/grunt jshint karma && ./node_modules/.bin/mocha test/**/*.test.js"
+        "pretest": "./node_modules/.bin/grunt jshint concat uglify",
+        "test": "./node_modules/.bin/grunt karma && ./node_modules/.bin/mocha test/**/*.test.js"
     },
 
     "dependencies": {
@@ -60,7 +61,7 @@
         "grunt-contrib-jshint": "~0.6.4",
         "grunt-contrib-uglify": "~0.2.4",
         "grunt-karma": "~0.7.1",
-        "jsdom": "~0.8.5",
+        "jsdom": "~0.8.6",
         "karma-coverage": "~0.1.0",
         "karma-mocha": "~0.1.0",
         "mocha": "~1.13.0",
