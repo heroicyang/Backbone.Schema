@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 0.10.18
+  - 0.10.20
 
 before_script:
   # Starting virtual framebuffer for running browsers
