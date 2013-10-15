@@ -17,7 +17,7 @@ The plugin helps you define schemas for your models. It supports a regular types
 
 **Dependencies:**
 
-  - [Backbone](https://github.com/documentcloud/backbone) `>= 1.0.0`
+  - [Backbone](https://github.com/documentcloud/backbone) `>= 1.1.0`
   - [Underscore](https://github.com/documentcloud/underscore) `>= 1.5.2`
   - [Globalize](https://github.com/jquery/globalize) `>= 0.1.1`
 
