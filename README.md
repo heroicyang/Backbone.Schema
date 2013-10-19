@@ -221,6 +221,9 @@ model.get('reference-collection'); // <-- instance of Backbone.Collection
 The plugin prevents setting `undefined` values, instead of this it assigns a default value or `null` for regular properties, `{}` for models and `[]` for collections and arrays.
 
 ## Changelog
+### 0.4.8
+  - `Backbone.Schema` could be extended
+
 ### 0.4.7
   - Added CommonJS support
 

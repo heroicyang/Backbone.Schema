@@ -120,6 +120,8 @@
     };
 
     _.extend(Schema, {
+        extend: Backbone.Model.extend
+    }, {
         handlers: {
             string: {
                 getter: function (attribute, value) {
@@ -346,8 +348,8 @@
     });
 
     _.extend(Schema.prototype, {
-        constructor: Schema,
-
+        constructor: Schema
+    }, {
         define: function (attribute, options) {
 
             ////////////////////
@@ -420,7 +422,11 @@
 
             ////////////////////
 
-            var callbacks = this.constructor.handlers[type] || {};
+            var constructor = this.constructor;
+
+            ////////////////////
+
+            var callbacks = constructor.handlers[type] || {};
 
             ////////////////////
 

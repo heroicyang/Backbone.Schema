@@ -1,5 +1,5 @@
 /**
- * Backbone.Schema v0.4.7
+ * Backbone.Schema v0.4.8
  * https://github.com/DreamTheater/Backbone.Schema
  *
  * Copyright (c) 2013 Dmytro Nemoga
@@ -127,6 +127,8 @@
     };
 
     _.extend(Schema, {
+        extend: Backbone.Model.extend
+    }, {
         handlers: {
             string: {
                 getter: function (attribute, value) {
@@ -353,8 +355,8 @@
     });
 
     _.extend(Schema.prototype, {
-        constructor: Schema,
-
+        constructor: Schema
+    }, {
         define: function (attribute, options) {
 
             ////////////////////
@@ -427,7 +429,11 @@
 
             ////////////////////
 
-            var callbacks = this.constructor.handlers[type] || {};
+            var constructor = this.constructor;
+
+            ////////////////////
+
+            var callbacks = constructor.handlers[type] || {};
 
             ////////////////////
 
