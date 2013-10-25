@@ -102,30 +102,36 @@
         });
 
         describe('#define(attribute, options)', function () {
-            it('should add handlers to attributes of the model', function () {
+            it('should define attributes of the schema', function () {
                 schema.define({
                     'string-property': { type: 'string' },
                     'boolean-property': { type: 'boolean' },
                     'number-property': { type: 'number' },
                     'datetime-property': { type: 'datetime', format: 'd', standard: 'iso' },
-                    'locale-property': { type: 'locale' },
+                    'locale-property': { type: 'locale' }
+                });
 
+                schema.define({
                     'array-of-strings': { array: 'string' },
                     'array-of-booleans': { array: 'boolean' },
                     'array-of-numbers': { array: 'number' },
                     'array-of-datetimes': { array: 'datetime', format: 'd', standard: 'iso' },
-                    'array-of-locales': { array: 'locale' },
+                    'array-of-locales': { array: 'locale' }
+                });
 
+                schema.define({
                     'nested-model': { model: Backbone.Model, clear: true },
-                    'nested-collection': { collection: Backbone.Collection },
+                    'nested-collection': { collection: Backbone.Collection }
+                });
 
+                schema.define({
                     'reference-model': { type: 'model', source: sourceCollection, clear: true },
                     'reference-collection': { type: 'collection', source: sourceCollection }
                 });
 
                 schema.define('typeless-property');
 
-                expect(schema.handlers).to.have.keys([
+                expect(schema.attributes).to.have.keys([
                     'string-property',
                     'boolean-property',
                     'number-property',
@@ -148,9 +154,9 @@
                 ]);
             });
 
-            it('should convert existing attributes according to schema', function () {
+            it('should convert existing attributes of the model according to schema', function () {
                 expect(model.attributes['string-property']).to.equal('string');
-                expect(model.attributes['boolean-property']).to.be.true;
+                expect(model.attributes['boolean-property']).to.equal(true);
                 expect(model.attributes['number-property']).to.equal(999999.99);
                 expect(model.attributes['datetime-property']).to.equal('2012-12-12T00:00:00.000Z');
                 expect(model.attributes['locale-property']).to.equal('HELLO_WORLD');
@@ -180,7 +186,7 @@
         });
 
         describe('#model.toJSON()', function () {
-            it('should return original attributes and invoke `toJSON()` of all nested models and collections', function () {
+            it('should return original attributes of the model and invoke `toJSON()` of all nested models and collections', function () {
                 expect(model.toJSON()).to.deep.equal({
                     'string-property': 'string',
                     'boolean-property': true,

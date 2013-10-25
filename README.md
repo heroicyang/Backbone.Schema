@@ -120,8 +120,8 @@ var User = Backbone.Model.extend({
 
         schema.define('fullName', {
             getter: function (attribute, value) {
-                var firstName = this.get('firstName'),
-                    lastName = this.get('lastName');
+                var firstName = this.model.get('firstName'),
+                    lastName = this.model.get('lastName');
 
                 return firstName + ' ' + lastName;
             },

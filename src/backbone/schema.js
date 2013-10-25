@@ -40,7 +40,7 @@
         schema = _.extend(this, {
             model: model
         }, {
-            handlers: {}
+            attributes: {}
         });
 
         ////////////////////
@@ -71,13 +71,16 @@
 
                 ////////////////////
 
-                var getter = (schema.handlers[attribute] || {}).getter;
+                var options = schema.attributes[attribute],
+                    getter = options && options.getter;
 
                 ////////////////////
 
                 var value = fn.call(this, attribute);
 
-                return getter ? getter(attribute, value) : this.attributes[attribute];
+                ////////////////////
+
+                return getter ? getter(attribute, value) : value;
             }),
 
             set: _.wrap(model.set, function (fn, key, value, options) {
@@ -95,24 +98,27 @@
 
                 ////////////////////
 
-                var result = {};
+                var values = {};
 
                 _.each(attributes, function (value, attribute, attributes) {
 
                     ////////////////////
 
-                    var setter = (schema.handlers[attribute] || {}).setter;
+                    var options = schema.attributes[attribute],
+                        setter = options && options.setter;
 
                     ////////////////////
 
-                    var hash =  setter ? setter(attribute, value) : _.pick(attributes, attribute);
+                    var result = setter ? setter(attribute, value) : _.pick(attributes, attribute);
 
-                    _.each(hash, function (value, key) {
-                        result[key] = value;
+                    ////////////////////
+
+                    _.each(result, function (value, key) {
+                        values[key] = value;
                     });
                 });
 
-                fn.call(this, result, options);
+                fn.call(this, values, options);
 
                 return this;
             })
@@ -272,7 +278,7 @@
 
                     ////////////////////
 
-                    var model = this.get(attribute), attributes;
+                    var model = this.model.get(attribute), attributes;
 
                     if (value instanceof Model) {
                         attributes = value === model ? value : _.clone(value.attributes);
@@ -317,7 +323,7 @@
 
                     ////////////////////
 
-                    var collection = this.get(attribute), models;
+                    var collection = this.model.get(attribute), models;
 
                     if (value instanceof Collection) {
                         models = value === collection ? value : _.clone(value.models);
@@ -372,7 +378,7 @@
 
                 ////////////////////
 
-                this._addHandlers(attribute, options);
+                this._addAttribute(attribute, options);
             }, this);
 
             this.refresh();
@@ -384,26 +390,31 @@
 
             ////////////////////
 
-            var handlers = this.handlers, attributes = {};
+            var attributes = this.attributes, values = {};
 
-            _.each(handlers, function (options, attribute) {
-                attributes[attribute] = this.model.attributes[attribute];
+            _.each(attributes, function (options, attribute) {
+                values[attribute] = this.model.attributes[attribute];
             }, this);
 
             ////////////////////
 
-            this.model.set(attributes);
+            this.model.set(values);
 
             return this;
         },
 
         defaultValue: function (attribute) {
-            var defaults = _.result(this.model, 'defaults') || {};
 
-            return _.has(defaults, attribute) ? defaults[attribute] : null;
+            ////////////////////
+
+            var defaults = _.result(this.model, 'defaults');
+
+            ////////////////////
+
+            return defaults && _.has(defaults, attribute) ? defaults[attribute] : null;
         },
 
-        _addHandlers: function (attribute, options) {
+        _addAttribute: function (attribute, options) {
 
             ////////////////////
 
@@ -426,12 +437,15 @@
 
             ////////////////////
 
-            var callbacks = constructor.handlers[type] || {};
+            var handlers = constructor.handlers[type],
+
+                getter = handlers && handlers.getter,
+                setter = handlers && handlers.setter;
 
             ////////////////////
 
-            this.handlers[attribute] = _.defaults(options, {
-                getter: _.wrap(callbacks.getter, function (fn, attribute, value) {
+            this.attributes[attribute] = _.defaults(options, {
+                getter: _.wrap(getter, function (fn, attribute, value) {
                     var results = [], values = array ? value : [value];
 
                     _.each(values, function (value) {
@@ -449,7 +463,7 @@
                     return array ? results : results[0];
                 }),
 
-                setter: _.wrap(callbacks.setter, function (fn, attribute, value) {
+                setter: _.wrap(setter, function (fn, attribute, value) {
                     var results = [], values = array ? value : [value];
 
                     _.each(values, function (value) {
@@ -487,10 +501,12 @@
                 })
             });
 
-            this._bindCallbacks(options);
+            this._bindHandlers(options);
+
+            return this;
         },
 
-        _bindCallbacks: function (options) {
+        _bindHandlers: function (options) {
 
             ////////////////////
 
@@ -498,10 +514,10 @@
 
             ////////////////////
 
-            var model = this.model;
+            if (getter) options.getter = _.bind(getter, this);
+            if (setter) options.setter = _.bind(setter, this);
 
-            if (getter) options.getter = _.bind(getter, model);
-            if (setter) options.setter = _.bind(setter, model);
+            return this;
         }
     });
 
