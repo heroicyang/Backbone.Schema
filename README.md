@@ -307,3 +307,7 @@ The plugin prevents setting `undefined` values, instead of this it assigns a def
 
 ### 0.1.0
   - Initial release
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/DreamTheater/backbone.schema/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
