@@ -13,7 +13,7 @@
 [![Build Status][travis-badge]][travis-link]
 [![Dependency Status][gemnasium-badge]][gemnasium-link]
 
-The plugin helps you define schemas for your models. It supports a regular types, arrays, nested or reference models/collections, allows to define a custom data types and computable properties.
+This plugin allow you define schemas for your models. It provides type control, computable properties, references between models and collections, filters and localization.
 
 **Dependencies:**
 
@@ -22,20 +22,14 @@ The plugin helps you define schemas for your models. It supports a regular types
   - [Globalize](https://github.com/jquery/globalize) `>= 0.1.1`
 
 ## Getting Started
-### Create model
-Define the model. It should be an instance of `Backbone.Model` or its inheritor.
+### Create model and schema
+First you need to define model and schema.
 ```js
-var model = new Backbone.Model();
-```
-
-### Create schema
-`Backbone.Schema` is a decorator. Just pass the model into constructor of class to getting started.
-```js
-var schema = new Backbone.Schema(model);
+var model = new Backbone.Model(), schema = new Backbone.Schema(model);
 ```
 
 ### Define properties
-Use `schema.define(attribute, options)` method to define properties of your model. If you want to define a lot of properties in one action use `schema.define(attributes)` option.
+Now you got instances of model and schema and you can start defining properties of the model. Use `schema.define(attribute, options)` method to do it.
 
 #### Option `type`
 ##### Type `string`
@@ -221,6 +215,9 @@ model.get('reference-collection'); // <-- instance of Backbone.Collection
 The plugin prevents setting `undefined` values, instead of this it assigns a default value or `null` for regular properties, `{}` for models and `[]` for collections and arrays.
 
 ## Changelog
+### 0.4.9
+  - Fixed issue with nested models and collections
+
 ### 0.4.8
   - `Backbone.Schema` could be extended
 

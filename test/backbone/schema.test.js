@@ -17,11 +17,9 @@
     var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize,
 
         chai = root.chai,
-        sinon = root.sinon;
+        sinon = root.sinon,
 
-    ////////////////////
-
-    var expect = chai.expect;
+        expect = chai.expect;
 
     ////////////////////
 
@@ -67,7 +65,7 @@
 
                 var Model = Backbone.Model.extend({
                     initialize: function () {
-                        schema = Backbone.Schema(this);
+                        schema = new Backbone.Schema(this);
                     }
                 });
 

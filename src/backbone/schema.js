@@ -19,11 +19,7 @@
 }(function (root) {
     'use strict';
 
-    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
-
-    ////////////////////
-
-    var schema;
+    var self, _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
 
     ////////////////////
 
@@ -37,7 +33,7 @@
 
         ////////////////////
 
-        schema = _.extend(this, {
+        self = _.extend(this, {
             model: model
         }, {
             attributes: {}
@@ -71,7 +67,7 @@
 
                 ////////////////////
 
-                var options = schema.attributes[attribute],
+                var options = self.attributes[attribute],
                     getter = options && options.getter;
 
                 ////////////////////
@@ -104,7 +100,7 @@
 
                     ////////////////////
 
-                    var options = schema.attributes[attribute],
+                    var options = self.attributes[attribute],
                         setter = options && options.setter;
 
                     ////////////////////
@@ -280,7 +276,7 @@
 
                     var model = this.model.get(attribute), attributes;
 
-                    if (value instanceof Model) {
+                    if (value instanceof Backbone.Model) {
                         attributes = value === model ? value : _.clone(value.attributes);
                     } else {
                         attributes = source ? source.get(value) : value;
@@ -325,7 +321,7 @@
 
                     var collection = this.model.get(attribute), models;
 
-                    if (value instanceof Collection) {
+                    if (value instanceof Backbone.Collection) {
                         models = value === collection ? value : _.clone(value.models);
                     } else {
                         models = source ? source.filter(function (model) {
@@ -471,7 +467,7 @@
                         ////////////////////
 
                         if (_.isUndefined(value)) {
-                            value = schema.defaultValue(attribute);
+                            value = self.defaultValue(attribute);
                         }
 
                         ////////////////////
