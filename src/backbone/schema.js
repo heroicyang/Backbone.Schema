@@ -114,9 +114,7 @@
                     });
                 });
 
-                fn.call(this, values, options);
-
-                return this;
+                return fn.call(this, values, options);
             })
         });
     };
