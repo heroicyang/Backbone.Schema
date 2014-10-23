@@ -3,7 +3,7 @@ module.exports = (function () {
 
     var _ = require('underscore'),
         Backbone = require('backbone'),
-        Globalize = require('globalize'),
+        moment = require('moment'),
 
         chai = require('chai').use(require('sinon-chai')),
         sinon = require('sinon');
@@ -21,7 +21,7 @@ module.exports = (function () {
     return {
         _: _,
         Backbone: Backbone,
-        Globalize: Globalize,
+        moment: moment,
 
         chai: chai,
         sinon: sinon

@@ -14,7 +14,7 @@ module.exports = function (config) {
             'lib/jquery/jquery.js',
             'lib/underscore/underscore.js',
             'lib/backbone/backbone.js',
-            'lib/globalize/globalize.js',
+            'lib/moment/moment.js',
 
             // Sources
             'src/backbone/schema.js',

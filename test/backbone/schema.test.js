@@ -14,7 +14,7 @@
 }(function (root) {
     'use strict';
 
-    var _ = root._, Backbone = root.Backbone, Globalize = root.Globalize,
+    var _ = root._, Backbone = root.Backbone, moment = root.moment,
 
         chai = root.chai,
         sinon = root.sinon,
@@ -67,12 +67,12 @@
                     'string-property': 'string',
                     'boolean-property': true,
                     'number-property': 999999.99,
-                    'datetime-property': '2012-12-12T00:00:00.000Z',
+                    'datetime-property': '2014-10-23T12:11:49.119Z',
 
                     'array-of-strings': ['string'],
                     'array-of-booleans': [true],
                     'array-of-numbers': [999999.99],
-                    'array-of-datetimes': ['2012-12-12T00:00:00.000Z'],
+                    'array-of-datetimes': ['2014-10-23T12:11:49.119Z'],
 
                     'nested-model': { id: 0, value: 'foo' },
                     'nested-collection': [
@@ -95,14 +95,14 @@
                     'string-property': { type: 'string' },
                     'boolean-property': { type: 'boolean' },
                     'number-property': { type: 'number' },
-                    'datetime-property': { type: 'datetime', standard: 'iso' }
+                    'datetime-property': { type: 'datetime', standard: 'iso', format: 'YYYY/MM/DD' }
                 });
 
                 schema.define({
                     'array-of-strings': { array: 'string' },
                     'array-of-booleans': { array: 'boolean' },
                     'array-of-numbers': { array: 'number' },
-                    'array-of-datetimes': { array: 'datetime', standard: 'iso' }
+                    'array-of-datetimes': { array: 'datetime', standard: 'iso', format: 'YYYY/MM/DD' }
                 });
 
                 schema.define({
@@ -142,12 +142,12 @@
                 expect(model.attributes['string-property']).to.equal('string');
                 expect(model.attributes['boolean-property']).to.equal(true);
                 expect(model.attributes['number-property']).to.equal(999999.99);
-                expect(model.attributes['datetime-property']).to.equal('2012-12-12T00:00:00.000Z');
+                expect(model.attributes['datetime-property']).to.equal('2014-10-23T12:11:49.119Z');
 
                 expect(model.attributes['array-of-strings']).to.deep.equal(['string']);
                 expect(model.attributes['array-of-booleans']).to.deep.equal([true]);
                 expect(model.attributes['array-of-numbers']).to.deep.equal([999999.99]);
-                expect(model.attributes['array-of-datetimes']).to.deep.equal(['2012-12-12T00:00:00.000Z']);
+                expect(model.attributes['array-of-datetimes']).to.deep.equal(['2014-10-23T12:11:49.119Z']);
 
                 expect(model.attributes['nested-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
                 expect(model.attributes['nested-collection'].toJSON()).to.deep.equal([
@@ -173,12 +173,12 @@
                     'string-property': 'string',
                     'boolean-property': true,
                     'number-property': 999999.99,
-                    'datetime-property': '2012-12-12T00:00:00.000Z',
+                    'datetime-property': '2014-10-23T12:11:49.119Z',
 
                     'array-of-strings': ['string'],
                     'array-of-booleans': [true],
                     'array-of-numbers': [999999.99],
-                    'array-of-datetimes': ['2012-12-12T00:00:00.000Z'],
+                    'array-of-datetimes': ['2014-10-23T12:11:49.119Z'],
 
                     'nested-model': { id: 0, value: 'foo' },
                     'nested-collection': [
@@ -223,7 +223,7 @@
             it('should return value as is', function () {
                 var datetimeProperty = model.get('datetime-property');
 
-                expect(datetimeProperty.toISOString()).to.equal(new Date('2012-12-12T00:00:00.000Z').toISOString());
+                expect(datetimeProperty).to.equal('2014/10/23');
             });
         });
 
@@ -255,7 +255,7 @@
             it('should return all values from array as is', function () {
                 var arrayOfDatetimes = model.get('array-of-datetimes');
 
-                expect(arrayOfDatetimes).to.deep.equal([new Date('2012-12-12T00:00:00.000Z')]);
+                expect(arrayOfDatetimes).to.deep.equal(['2014/10/23']);
             });
         });
 
@@ -317,7 +317,7 @@
 
         describe('#model.set("string-property")', function () {
             it('should convert value to string', function () {
-                var attribute = 'string-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'string-property', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, 'string');
                 expect(model.attributes[attribute]).to.equal('string');
@@ -359,7 +359,7 @@
 
         describe('#model.set("boolean-property")', function () {
             it('should convert value to boolean', function () {
-                var attribute = 'boolean-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'boolean-property', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, 'true');
                 expect(model.attributes[attribute]).to.be.true;
@@ -401,7 +401,7 @@
 
         describe('#model.set("number-property")', function () {
             it('should convert value to number', function () {
-                var attribute = 'number-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'number-property', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, '999999.99');
                 expect(model.attributes[attribute]).to.equal(999999.99);
@@ -443,13 +443,13 @@
 
         describe('#model.set("datetime-property")', function () {
             it('should convert value to instance of date', function () {
-                var attribute = 'datetime-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'datetime-property', date = new Date('2014/10/23'), array = [2014, 9, 23], object = { year: 2014, month: 9, day:23 };
 
-                model.set(attribute, '12/12/2012');
-                expect(model.attributes[attribute]).to.equal(date.toISOString());
+                model.set(attribute, '2014/10/23');
+                expect(model.attributes[attribute]).to.equal('2014-10-22T16:00:00.000Z');
 
                 model.set(attribute, '');
-                expect(model.attributes[attribute]).to.equal('Invalid Date');
+                expect(model.attributes[attribute]).to.equal('Invalid date');
 
                 model.set(attribute, 999999.99);
                 expect(model.attributes[attribute]).to.equal('1970-01-01T00:16:39.999Z');
@@ -464,13 +464,13 @@
                 expect(model.attributes[attribute]).to.equal('1970-01-01T00:00:00.000Z');
 
                 model.set(attribute, date);
-                expect(model.attributes[attribute]).to.equal(date.toISOString());
+                expect(model.attributes[attribute]).to.equal('2014-10-22T16:00:00.000Z');
 
                 model.set(attribute, array);
-                expect(model.attributes[attribute]).to.equal('Invalid Date');
+                expect(model.attributes[attribute]).to.equal('2014-10-22T16:00:00.000Z');
 
                 model.set(attribute, object);
-                expect(model.attributes[attribute]).to.equal('Invalid Date');
+                expect(model.attributes[attribute]).to.equal('2014-10-22T16:00:00.000Z');
 
                 model.set(attribute, null);
                 expect(model.attributes[attribute]).to.be.null;
@@ -485,7 +485,7 @@
 
         describe('#model.set("array-of-strings")', function () {
             it('should convert each value in array to string', function () {
-                var attribute = 'array-of-strings', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'array-of-strings', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, ['string']);
                 expect(model.attributes[attribute]).to.deep.equal(['string']);
@@ -536,7 +536,7 @@
 
         describe('#model.set("array-of-booleans")', function () {
             it('should convert each value in array to boolean', function () {
-                var attribute = 'array-of-booleans', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'array-of-booleans', date = new Date('2014/12/23'), array = [], object = {};
 
                 model.set(attribute, ['true']);
                 expect(model.attributes[attribute]).to.deep.equal([true]);
@@ -587,7 +587,7 @@
 
         describe('#model.set("array-of-numbers")', function () {
             it('should convert each value in array to number', function () {
-                var attribute = 'array-of-numbers', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'array-of-numbers', date = new Date('2014/12/23'), array = [], object = {};
 
                 model.set(attribute, ['999999.99']);
                 expect(model.attributes[attribute]).to.deep.equal([999999.99]);
@@ -638,13 +638,13 @@
 
         describe('#model.set("array-of-datetimes")', function () {
             it('should convert each value in array to instance of date', function () {
-                var attribute = 'array-of-datetimes', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'array-of-datetimes', date = new Date('2014/10/23'), array = [2014, 9, 23], object = { year: 2014, month:9, day: 23 };
 
-                model.set(attribute, ['12/12/2012']);
-                expect(model.attributes[attribute]).to.deep.equal([date.toISOString()]);
+                model.set(attribute, ['2014/10/23']);
+                expect(model.attributes[attribute]).to.deep.equal(['2014-10-22T16:00:00.000Z']);
 
                 model.set(attribute, ['']);
-                expect(model.attributes[attribute]).to.deep.equal(['Invalid Date']);
+                expect(model.attributes[attribute]).to.deep.equal(['Invalid date']);
 
                 model.set(attribute, [999999.99]);
                 expect(model.attributes[attribute]).to.deep.equal(['1970-01-01T00:16:39.999Z']);
@@ -659,13 +659,13 @@
                 expect(model.attributes[attribute]).to.deep.equal(['1970-01-01T00:00:00.000Z']);
 
                 model.set(attribute, [date]);
-                expect(model.attributes[attribute]).to.deep.equal([date.toISOString()]);
+                expect(model.attributes[attribute]).to.deep.equal(['2014-10-22T16:00:00.000Z']);
 
                 model.set(attribute, [array]);
-                expect(model.attributes[attribute]).to.deep.equal(['Invalid Date']);
+                expect(model.attributes[attribute]).to.deep.equal(['2014-10-22T16:00:00.000Z']);
 
                 model.set(attribute, [object]);
-                expect(model.attributes[attribute]).to.deep.equal(['Invalid Date']);
+                expect(model.attributes[attribute]).to.deep.equal(['2014-10-22T16:00:00.000Z']);
 
                 model.set(attribute, [null]);
                 expect(model.attributes[attribute]).to.deep.equal([null]);
@@ -841,7 +841,7 @@
 
         describe('#model.set("typeless-property")', function () {
             it('should not convert value if it is not undefined', function () {
-                var attribute = 'typeless-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'typeless-property', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, 'string');
                 expect(model.attributes[attribute]).to.equal('string');
@@ -883,7 +883,7 @@
 
         describe('#model.set("undefined-property")', function () {
             it('should not convert value in any case', function () {
-                var attribute = 'undefined-property', date = new Date('12/12/2012'), array = [], object = {};
+                var attribute = 'undefined-property', date = new Date('2014/10/23'), array = [], object = {};
 
                 model.set(attribute, 'string');
                 expect(model.attributes[attribute]).to.equal('string');

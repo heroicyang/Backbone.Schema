@@ -8,7 +8,8 @@
 
     var root = isNode ? {
         _: require('underscore'),
-        Backbone: require('backbone')
+        Backbone: require('backbone'),
+        moment: require('moment')
     } : window;
 
     ////////////////////
@@ -18,7 +19,7 @@
 }(function (root) {
     'use strict';
 
-    var self, _ = root._, Backbone = root.Backbone;
+    var self, _ = root._, Backbone = root.Backbone, moment = root.moment;
 
     ////////////////////
 
@@ -159,17 +160,21 @@
             },
 
             datetime: {
-                getter: function (attribute, value) {
+                getter: function (attribute, value, options) {
 
                     ////////////////////
 
-                    if (!_.isDate(value)) {
-                        value = new Date(value);
+                    var format = options.format;
+
+                    ////////////////////
+
+                    if (!moment.isMoment(value)) {
+                        value = moment(value);
                     }
 
                     ////////////////////
 
-                    return value;
+                    return format ? value.format(format) : value;
                 },
 
                 setter: function (attribute, value, options) {
@@ -180,8 +185,8 @@
 
                     ////////////////////
 
-                    if (!_.isDate(value)) {
-                        value = new Date(value);
+                    if (!moment.isMoment(value)) {
+                        value = moment(value);
                     }
 
                     ////////////////////
@@ -190,13 +195,13 @@
 
                     switch (standard) {
                     case 'iso':
-                        result = value.toJSON() ? value.toISOString() : value.toString();
+                        result = value.toISOString();
                         break;
                     case 'unix':
-                        result = value.getTime();
+                        result = value.unix();
                         break;
                     default:
-                        result = value;
+                        result = value.toDate();
                         break;
                     }
 

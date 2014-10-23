@@ -1,72 +1,64 @@
 {
-    "name": "backbone.schema",
-    "title": "Backbone.Schema",
-    "version": "0.4.9",
-    "description": "The plugin helps you define schemas for your models. It supports a regular types, arrays, nested or reference models/collections, allows to define a custom data types and computable properties.",
-
-    "keywords": [
-        "attribute",
-        "backbone",
-        "calculated",
-        "collection",
-        "computed",
-        "data",
-        "field",
-        "model",
-        "nested",
-        "plugin",
-        "property",
-        "reference",
-        "schema",
-        "type"
-    ],
-
-    "homepage": "https://github.com/DreamTheater/Backbone.Schema",
-
-    "bugs": {
-        "url": "https://github.com/DreamTheater/Backbone.Schema/issues"
-    },
-
-    "author": {
-        "name": "Dmytro Nemoga",
-        "url": "https://github.com/DreamTheater"
-    },
-
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/DreamTheater/Backbone.Schema.git"
-    },
-
-    "license": {
-        "type": "MIT",
-        "url": "https://github.com/DreamTheater/Backbone.Schema/blob/master/LICENSE"
-    },
-
-    "scripts": {
-        "pretest": "./node_modules/.bin/grunt jshint concat uglify",
-        "test": "./node_modules/.bin/grunt karma && ./node_modules/.bin/mocha test/**/*.test.js"
-    },
-
-    "dependencies": {
-        "backbone": "~1.1.0",
-        "underscore": "~1.5.2"
-    },
-
-    "devDependencies": {
-        "chai": "~1.9.1",
-        "grunt": "~0.4.4",
-        "grunt-cli": "~0.1.13",
-        "grunt-contrib-concat": "~0.4.0",
-        "grunt-contrib-jshint": "~0.10.0",
-        "grunt-contrib-uglify": "~0.4.0",
-        "grunt-karma": "~0.8.2",
-        "jsdom": "~0.10.5",
-        "karma-coverage": "~0.2.1",
-        "karma-mocha": "~0.1.3",
-        "karma-firefox-launcher": "~0.1.3",
-        "karma-phantomjs-launcher": "~0.1.4",
-        "mocha": "~1.18.2",
-        "sinon": "~1.9.1",
-        "sinon-chai": "~2.5.0"
-    }
+  "name": "backbone.schema",
+  "title": "Backbone.Schema",
+  "version": "0.4.9",
+  "description": "The plugin helps you define schemas for your models. It supports a regular types, arrays, nested or reference models/collections, allows to define a custom data types and computable properties.",
+  "keywords": [
+    "attribute",
+    "backbone",
+    "calculated",
+    "collection",
+    "computed",
+    "data",
+    "field",
+    "model",
+    "nested",
+    "plugin",
+    "property",
+    "reference",
+    "schema",
+    "type"
+  ],
+  "homepage": "https://github.com/DreamTheater/Backbone.Schema",
+  "bugs": {
+    "url": "https://github.com/DreamTheater/Backbone.Schema/issues"
+  },
+  "author": {
+    "name": "Dmytro Nemoga",
+    "url": "https://github.com/DreamTheater"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DreamTheater/Backbone.Schema.git"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/DreamTheater/Backbone.Schema/blob/master/LICENSE"
+  },
+  "scripts": {
+    "pretest": "./node_modules/.bin/grunt jshint concat uglify",
+    "test": "./node_modules/.bin/grunt karma && ./node_modules/.bin/mocha test/**/*.test.js"
+  },
+  "dependencies": {
+    "backbone": "^1.1.0",
+    "moment": "^2.8.3",
+    "underscore": "^1.5.2"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "grunt": "~0.4.4",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-karma": "~0.8.2",
+    "jsdom": "~0.10.5",
+    "karma-coverage": "~0.2.1",
+    "karma-mocha": "~0.1.3",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "mocha": "~1.18.2",
+    "sinon": "~1.9.1",
+    "sinon-chai": "~2.5.0"
+  }
 }
