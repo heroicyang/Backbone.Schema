@@ -49,7 +49,6 @@
 
     "dependencies": {
         "backbone": "~1.1.0",
-        "globalize": "~0.1.1",
         "underscore": "~1.5.2"
     },
 

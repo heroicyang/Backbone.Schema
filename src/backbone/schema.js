@@ -8,8 +8,7 @@
 
     var root = isNode ? {
         _: require('underscore'),
-        Backbone: require('backbone'),
-        Globalize: require('globalize')
+        Backbone: require('backbone')
     } : window;
 
     ////////////////////
@@ -19,7 +18,7 @@
 }(function (root) {
     'use strict';
 
-    var self, _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
+    var self, _ = root._, Backbone = root.Backbone;
 
     ////////////////////
 
@@ -144,41 +143,23 @@
             },
 
             number: {
-                getter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture, format = options.format;
-
-                    ////////////////////
-
-                    return format ? Globalize.format(value, format, culture) : value;
+                getter: function (attribute, value) {
+                    return value;
                 },
 
-                setter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
+                setter: function (attribute, value) {
                     var result = Number(value);
 
                     if (isNaN(result)) {
                         result = _.isString(value) ? value : String(value);
                     }
 
-                    return _.isNumber(result) ? result : Globalize.parseFloat(result, culture) || 'NaN';
+                    return _.isNumber(result) ? result : 'NaN';
                 }
             },
 
             datetime: {
-                getter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture, format = options.format;
+                getter: function (attribute, value) {
 
                     ////////////////////
 
@@ -188,19 +169,19 @@
 
                     ////////////////////
 
-                    return format ? Globalize.format(value, format, culture) : value;
+                    return value;
                 },
 
                 setter: function (attribute, value, options) {
 
                     ////////////////////
 
-                    var culture = options.culture, format = options.format, standard = options.standard;
+                    var standard = options.standard;
 
                     ////////////////////
 
                     if (!_.isDate(value)) {
-                        value = Globalize.parseDate(value, format, culture) || new Date(value);
+                        value = new Date(value);
                     }
 
                     ////////////////////
@@ -220,36 +201,6 @@
                     }
 
                     return result;
-                }
-            },
-
-            locale: {
-                getter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
-                    return Globalize.localize(value, culture) || value;
-                },
-
-                setter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
-                    var result, messages = Globalize.findClosestCulture(culture).messages;
-
-                    _.find(messages, function (localization, message) {
-                        return localization === value ? result = message : false;
-                    });
-
-                    return result || String(value);
                 }
             },
 

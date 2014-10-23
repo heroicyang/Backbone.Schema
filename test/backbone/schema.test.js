@@ -31,14 +31,6 @@
 
         ////////////////////
 
-        before(function () {
-            Globalize.addCultureInfo('en', {
-                messages: {
-                    'HELLO_WORLD': 'Hello, World!'
-                }
-            });
-        });
-
         beforeEach(function () {
             sourceCollection.set([
                 { id: 0, value: 'foo' },
@@ -76,13 +68,11 @@
                     'boolean-property': true,
                     'number-property': 999999.99,
                     'datetime-property': '2012-12-12T00:00:00.000Z',
-                    'locale-property': 'HELLO_WORLD',
 
                     'array-of-strings': ['string'],
                     'array-of-booleans': [true],
                     'array-of-numbers': [999999.99],
                     'array-of-datetimes': ['2012-12-12T00:00:00.000Z'],
-                    'array-of-locales': ['HELLO_WORLD'],
 
                     'nested-model': { id: 0, value: 'foo' },
                     'nested-collection': [
@@ -105,16 +95,14 @@
                     'string-property': { type: 'string' },
                     'boolean-property': { type: 'boolean' },
                     'number-property': { type: 'number' },
-                    'datetime-property': { type: 'datetime', format: 'd', standard: 'iso' },
-                    'locale-property': { type: 'locale' }
+                    'datetime-property': { type: 'datetime', standard: 'iso' }
                 });
 
                 schema.define({
                     'array-of-strings': { array: 'string' },
                     'array-of-booleans': { array: 'boolean' },
                     'array-of-numbers': { array: 'number' },
-                    'array-of-datetimes': { array: 'datetime', format: 'd', standard: 'iso' },
-                    'array-of-locales': { array: 'locale' }
+                    'array-of-datetimes': { array: 'datetime', standard: 'iso' }
                 });
 
                 schema.define({
@@ -134,13 +122,11 @@
                     'boolean-property',
                     'number-property',
                     'datetime-property',
-                    'locale-property',
 
                     'array-of-strings',
                     'array-of-booleans',
                     'array-of-numbers',
                     'array-of-datetimes',
-                    'array-of-locales',
 
                     'nested-model',
                     'nested-collection',
@@ -157,13 +143,11 @@
                 expect(model.attributes['boolean-property']).to.equal(true);
                 expect(model.attributes['number-property']).to.equal(999999.99);
                 expect(model.attributes['datetime-property']).to.equal('2012-12-12T00:00:00.000Z');
-                expect(model.attributes['locale-property']).to.equal('HELLO_WORLD');
 
                 expect(model.attributes['array-of-strings']).to.deep.equal(['string']);
                 expect(model.attributes['array-of-booleans']).to.deep.equal([true]);
                 expect(model.attributes['array-of-numbers']).to.deep.equal([999999.99]);
                 expect(model.attributes['array-of-datetimes']).to.deep.equal(['2012-12-12T00:00:00.000Z']);
-                expect(model.attributes['array-of-locales']).to.deep.equal(['HELLO_WORLD']);
 
                 expect(model.attributes['nested-model'].toJSON()).to.deep.equal({ id: 0, value: 'foo' });
                 expect(model.attributes['nested-collection'].toJSON()).to.deep.equal([
@@ -190,13 +174,11 @@
                     'boolean-property': true,
                     'number-property': 999999.99,
                     'datetime-property': '2012-12-12T00:00:00.000Z',
-                    'locale-property': 'HELLO_WORLD',
 
                     'array-of-strings': ['string'],
                     'array-of-booleans': [true],
                     'array-of-numbers': [999999.99],
                     'array-of-datetimes': ['2012-12-12T00:00:00.000Z'],
-                    'array-of-locales': ['HELLO_WORLD'],
 
                     'nested-model': { id: 0, value: 'foo' },
                     'nested-collection': [
@@ -241,15 +223,7 @@
             it('should return value as is', function () {
                 var datetimeProperty = model.get('datetime-property');
 
-                expect(datetimeProperty).to.equal('12/12/2012');
-            });
-        });
-
-        describe('#model.get("locale-property")', function () {
-            it('should return string of localization', function () {
-                var localeProperty = model.get('locale-property');
-
-                expect(localeProperty).to.equal('Hello, World!');
+                expect(datetimeProperty.toISOString()).to.equal(new Date('2012-12-12T00:00:00.000Z').toISOString());
             });
         });
 
@@ -281,15 +255,7 @@
             it('should return all values from array as is', function () {
                 var arrayOfDatetimes = model.get('array-of-datetimes');
 
-                expect(arrayOfDatetimes).to.deep.equal(['12/12/2012']);
-            });
-        });
-
-        describe('#model.get("array-of-locales")', function () {
-            it('should return all values from array as strings of localization', function () {
-                var arrayOfLocales = model.get('array-of-locales');
-
-                expect(arrayOfLocales).to.deep.equal(['Hello, World!']);
+                expect(arrayOfDatetimes).to.deep.equal([new Date('2012-12-12T00:00:00.000Z')]);
             });
         });
 
@@ -437,7 +403,7 @@
             it('should convert value to number', function () {
                 var attribute = 'number-property', date = new Date('12/12/2012'), array = [], object = {};
 
-                model.set(attribute, '999,999.99');
+                model.set(attribute, '999999.99');
                 expect(model.attributes[attribute]).to.equal(999999.99);
 
                 model.set(attribute, '');
@@ -505,48 +471,6 @@
 
                 model.set(attribute, object);
                 expect(model.attributes[attribute]).to.equal('Invalid Date');
-
-                model.set(attribute, null);
-                expect(model.attributes[attribute]).to.be.null;
-
-                model.set(attribute, undefined);
-                expect(model.attributes[attribute]).to.be.null;
-
-                model.unset(attribute);
-                expect(model.attributes).to.not.have.property(attribute);
-            });
-        });
-
-        describe('#model.set("locale-property")', function () {
-            it('should convert value to key of localization', function () {
-                var attribute = 'locale-property', date = new Date('12/12/2012'), array = [], object = {};
-
-                model.set(attribute, 'Hello, World!');
-                expect(model.attributes[attribute]).to.equal('HELLO_WORLD');
-
-                model.set(attribute, '');
-                expect(model.attributes[attribute]).to.equal('');
-
-                model.set(attribute, 999999.99);
-                expect(model.attributes[attribute]).to.equal('999999.99');
-
-                model.set(attribute, 0);
-                expect(model.attributes[attribute]).to.equal('0');
-
-                model.set(attribute, true);
-                expect(model.attributes[attribute]).to.equal('true');
-
-                model.set(attribute, false);
-                expect(model.attributes[attribute]).to.equal('false');
-
-                model.set(attribute, date);
-                expect(model.attributes[attribute]).to.equal(date.toString());
-
-                model.set(attribute, array);
-                expect(model.attributes[attribute]).to.equal('');
-
-                model.set(attribute, object);
-                expect(model.attributes[attribute]).to.equal('[object Object]');
 
                 model.set(attribute, null);
                 expect(model.attributes[attribute]).to.be.null;
@@ -665,7 +589,7 @@
             it('should convert each value in array to number', function () {
                 var attribute = 'array-of-numbers', date = new Date('12/12/2012'), array = [], object = {};
 
-                model.set(attribute, ['999,999.99']);
+                model.set(attribute, ['999999.99']);
                 expect(model.attributes[attribute]).to.deep.equal([999999.99]);
 
                 model.set(attribute, ['']);
@@ -742,57 +666,6 @@
 
                 model.set(attribute, [object]);
                 expect(model.attributes[attribute]).to.deep.equal(['Invalid Date']);
-
-                model.set(attribute, [null]);
-                expect(model.attributes[attribute]).to.deep.equal([null]);
-
-                model.set(attribute, [undefined]);
-                expect(model.attributes[attribute]).to.deep.equal([null]);
-
-                model.set(attribute, []);
-                expect(model.attributes[attribute]).to.deep.equal([]);
-
-                model.set(attribute, null);
-                expect(model.attributes[attribute]).to.deep.equal([]);
-
-                model.set(attribute, undefined);
-                expect(model.attributes[attribute]).to.deep.equal([]);
-
-                model.unset(attribute);
-                expect(model.attributes).to.not.have.property(attribute);
-            });
-        });
-
-        describe('#model.set("array-of-locales")', function () {
-            it('should convert each value in array to key of localization', function () {
-                var attribute = 'array-of-locales', date = new Date('12/12/2012'), array = [], object = {};
-
-                model.set(attribute, ['Hello, World!']);
-                expect(model.attributes[attribute]).to.deep.equal(['HELLO_WORLD']);
-
-                model.set(attribute, ['']);
-                expect(model.attributes[attribute]).to.deep.equal(['']);
-
-                model.set(attribute, [999999.99]);
-                expect(model.attributes[attribute]).to.deep.equal(['999999.99']);
-
-                model.set(attribute, [0]);
-                expect(model.attributes[attribute]).to.deep.equal(['0']);
-
-                model.set(attribute, [true]);
-                expect(model.attributes[attribute]).to.deep.equal(['true']);
-
-                model.set(attribute, [false]);
-                expect(model.attributes[attribute]).to.deep.equal(['false']);
-
-                model.set(attribute, [date]);
-                expect(model.attributes[attribute]).to.deep.equal([date.toString()]);
-
-                model.set(attribute, [array]);
-                expect(model.attributes[attribute]).to.deep.equal(['']);
-
-                model.set(attribute, [object]);
-                expect(model.attributes[attribute]).to.deep.equal(['[object Object]']);
 
                 model.set(attribute, [null]);
                 expect(model.attributes[attribute]).to.deep.equal([null]);
