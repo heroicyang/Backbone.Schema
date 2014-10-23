@@ -19,7 +19,7 @@ This plugin allow you define schemas for your models. It provides type control, 
 
   - [Backbone](https://github.com/documentcloud/backbone) `>= 1.1.0`
   - [Underscore](https://github.com/documentcloud/underscore) `>= 1.5.2`
-  - [Globalize](https://github.com/jquery/globalize) `>= 0.1.1`
+  - [Moment](https://github.com/moment/moment/) `>= 2.8.3`
 
 ## Getting Started
 ### Create model and schema
@@ -51,51 +51,27 @@ model.get('boolean-property'); // <-- true
 ```
 
 ##### Type `number`
-Converts value to number. Represents as is, or as formatted string (depends from option `format`).
-
-**Additional options:**
-  - `format` - see more about [number formatting](https://github.com/jquery/globalize#numbers)
-  - `culture` - see more about [cultures](https://github.com/jquery/globalize#culture)
+Converts value to number. Represents as is.
 
 ```js
-schema.define('number-property', { type: 'number', format: 'n', culture: 'en' });
+schema.define('number-property', { type: 'number' });
 
-model.set('number-property', '999,999.99'); // --> 999999.99
-model.get('number-property'); // <-- "999,999.99"
+model.set('number-property', '999999.99'); // --> 999999.99
+model.get('number-property'); // <-- 999999.99
 ```
 
 ##### Type `datetime`
 Converts value to [Date](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Date), [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601), or [Unix time](http://en.wikipedia.org/wiki/Unix_time). Represents as is, or as formatted string (depends from option `format`).
 
 **Additional options:**
-  - `format` - see more about [date formatting](https://github.com/jquery/globalize#dates)
+  - `format` - see more about [moment formatting](http://momentjs.com/docs/#/displaying/format/)
   - `standard` (available values are `iso` and `unix`) - defines in which way date will be stored in the model (if not specified, date will be stored as [Date](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Date))
-  - `culture` - see more about [cultures](https://github.com/jquery/globalize#culture)
 
 ```js
-schema.define('datetime-property', { type: 'datetime', format: 'd', standard: 'unix', culture: 'en' });
+schema.define('datetime-property', { type: 'datetime', format: 'YYYY-MM-DD', standard: 'unix' });
 
-model.set('datetime-property', '12/12/2012'); // --> 1355263200000
-model.get('datetime-property'); // <-- "12/12/2012"
-```
-
-##### Type `locale`
-Converts value to key of localization. Represents as is, or as string of localization (depends from availability of localization).
-
-**Additional options:**
-  - `culture` - see more about [cultures](https://github.com/jquery/globalize#culture) and [localization](https://github.com/jquery/globalize#localize)
-
-```js
-Globalize.addCultureInfo('en', {
-    messages: {
-        'HELLO_WORLD': 'Hello, World!'
-    }
-});
-
-schema.define('locale-property', { type: 'locale', culture: 'en' });
-
-model.set('locale-property', 'Hello, World!'); // --> "HELLO_WORLD"
-model.get('locale-property'); // <-- "Hello, World!"
+model.set('datetime-property', new Date('2014/10/23')); // --> 1413993600
+model.get('datetime-property'); // <-- "2014-10-23"
 ```
 
 ### Define properties of array type
@@ -215,6 +191,10 @@ model.get('reference-collection'); // <-- instance of Backbone.Collection
 The plugin prevents setting `undefined` values, instead of this it assigns a default value or `null` for regular properties, `{}` for models and `[]` for collections and arrays.
 
 ## Changelog
+### 0.5.0
+  - Removed [Globalize](https://github.com/jquery/globalize)
+  - Added [Moment.js](https://github.com/moment/moment/) to manipulate `datetime` type
+
 ### 0.4.9
   - Fixed issue with nested models and collections
 

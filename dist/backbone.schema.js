@@ -1,5 +1,5 @@
 /**
- * Backbone.Schema v0.4.9
+ * Backbone.Schema v0.5.0
  * https://github.com/DreamTheater/Backbone.Schema
  *
  * Copyright (c) 2014 Dmytro Nemoga
@@ -16,7 +16,7 @@
     var root = isNode ? {
         _: require('underscore'),
         Backbone: require('backbone'),
-        Globalize: require('globalize')
+        moment: require('moment')
     } : window;
 
     ////////////////////
@@ -26,7 +26,7 @@
 }(function (root) {
     'use strict';
 
-    var self, _ = root._, Backbone = root.Backbone, Globalize = root.Globalize;
+    var self, _ = root._, Backbone = root.Backbone, moment = root.moment;
 
     ////////////////////
 
@@ -121,9 +121,7 @@
                     });
                 });
 
-                fn.call(this, values, options);
-
-                return this;
+                return fn.call(this, values, options);
             })
         });
     };
@@ -153,32 +151,18 @@
             },
 
             number: {
-                getter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture, format = options.format;
-
-                    ////////////////////
-
-                    return format ? Globalize.format(value, format, culture) : value;
+                getter: function (attribute, value) {
+                    return value;
                 },
 
-                setter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
+                setter: function (attribute, value) {
                     var result = Number(value);
 
                     if (isNaN(result)) {
                         result = _.isString(value) ? value : String(value);
                     }
 
-                    return _.isNumber(result) ? result : Globalize.parseFloat(result, culture) || 'NaN';
+                    return _.isNumber(result) ? result : 'NaN';
                 }
             },
 
@@ -187,29 +171,29 @@
 
                     ////////////////////
 
-                    var culture = options.culture, format = options.format;
+                    var format = options.format;
 
                     ////////////////////
 
-                    if (!_.isDate(value)) {
-                        value = new Date(value);
+                    if (!moment.isMoment(value)) {
+                        value = moment(value);
                     }
 
                     ////////////////////
 
-                    return format ? Globalize.format(value, format, culture) : value;
+                    return format ? value.format(format) : value;
                 },
 
                 setter: function (attribute, value, options) {
 
                     ////////////////////
 
-                    var culture = options.culture, format = options.format, standard = options.standard;
+                    var standard = options.standard;
 
                     ////////////////////
 
-                    if (!_.isDate(value)) {
-                        value = Globalize.parseDate(value, format, culture) || new Date(value);
+                    if (!moment.isMoment(value)) {
+                        value = moment(value);
                     }
 
                     ////////////////////
@@ -218,47 +202,17 @@
 
                     switch (standard) {
                     case 'iso':
-                        result = value.toJSON() ? value.toISOString() : value.toString();
+                        result = value.toISOString();
                         break;
                     case 'unix':
-                        result = value.getTime();
+                        result = value.unix();
                         break;
                     default:
-                        result = value;
+                        result = value.toDate();
                         break;
                     }
 
                     return result;
-                }
-            },
-
-            locale: {
-                getter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
-                    return Globalize.localize(value, culture) || value;
-                },
-
-                setter: function (attribute, value, options) {
-
-                    ////////////////////
-
-                    var culture = options.culture;
-
-                    ////////////////////
-
-                    var result, messages = Globalize.findClosestCulture(culture).messages;
-
-                    _.find(messages, function (localization, message) {
-                        return localization === value ? result = message : false;
-                    });
-
-                    return result || String(value);
                 }
             },
 
