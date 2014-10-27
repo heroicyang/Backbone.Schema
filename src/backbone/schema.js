@@ -19,7 +19,7 @@
 }(function (root) {
     'use strict';
 
-    var self, _ = root._, Backbone = root.Backbone, moment = root.moment;
+    var _ = root._, Backbone = root.Backbone, moment = root.moment;
 
     ////////////////////
 
@@ -33,7 +33,7 @@
 
         ////////////////////
 
-        self = _.extend(this, {
+        var self = _.extend(this, {
             model: model
         }, {
             attributes: {}
@@ -384,6 +384,7 @@
             ////////////////////
 
             var constructor = this.constructor;
+            var self = this;
 
             ////////////////////
 

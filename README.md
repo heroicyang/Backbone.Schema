@@ -191,6 +191,9 @@ model.get('reference-collection'); // <-- instance of Backbone.Collection
 The plugin prevents setting `undefined` values, instead of this it assigns a default value or `null` for regular properties, `{}` for models and `[]` for collections and arrays.
 
 ## Changelog
+### 0.5.1
+  - Fixed serious issue with `this` context
+
 ### 0.5.0
   - Removed [Globalize](https://github.com/jquery/globalize)
   - Added [Moment.js](https://github.com/moment/moment/) to manipulate `datetime` type

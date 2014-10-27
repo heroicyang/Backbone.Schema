@@ -1,7 +1,7 @@
 {
   "name": "backbone.schema",
   "title": "Backbone.Schema",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "The plugin helps you define schemas for your models. It supports a regular types, arrays, nested or reference models/collections, allows to define a custom data types and computable properties.",
   "keywords": [
     "attribute",

@@ -1,5 +1,5 @@
 /**
- * Backbone.Schema v0.5.0
+ * Backbone.Schema v0.5.1
  * https://github.com/DreamTheater/Backbone.Schema
  *
  * Copyright (c) 2014 Dmytro Nemoga
@@ -26,7 +26,7 @@
 }(function (root) {
     'use strict';
 
-    var self, _ = root._, Backbone = root.Backbone, moment = root.moment;
+    var _ = root._, Backbone = root.Backbone, moment = root.moment;
 
     ////////////////////
 
@@ -40,7 +40,7 @@
 
         ////////////////////
 
-        self = _.extend(this, {
+        var self = _.extend(this, {
             model: model
         }, {
             attributes: {}
@@ -391,6 +391,7 @@
             ////////////////////
 
             var constructor = this.constructor;
+            var self = this;
 
             ////////////////////
 
